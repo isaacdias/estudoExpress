@@ -1,27 +1,26 @@
-const { response } = require('express');
 const express = require('express');
+const {v4:uuidv4} = require('uuid')
 
 const app = express();
 
-app.get('/projects', (req, res) => {
-    const { title, owner} = req.query;
-    console.log(title);
-    console.log(owner);
+app.use(express.json());
 
-    res.json([
-        'projeto1',
-        'projeto2',
-    ])
+const projects = [];
+
+app.get('/projects', (req, res) => {
+    // const { title, owner} = req.query;
+
+    res.json(projects)
 });
 
 app.post('/projects', (req, res) => {
-    return res.json([
-        'projeto1',
-        'projeto2',
-        'projeto3',
-        'projeto4',
-        'projeto5',
-    ])
+    const { title, owner} = req.body;
+
+    const project = { id: uuidv4(), title, owner};
+
+    projects.push(project);
+
+    return res.json(project)
 })
 
 app.put('/projects/:id', (req, res) => {
